@@ -61,7 +61,7 @@ export class RestService {
   }
 
   getProject(projName): Observable<any> {
-    return this.http.get(endPoint + 'projects').pipe(
+    return this.http.get(endPoint + `projects/${projName}`).pipe(
       map(this.extractData));
   }
 

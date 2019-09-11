@@ -1,6 +1,6 @@
 <div class="navbar">
-    <div class="col-md-2"></div>
-    <div class="navbar col-md-8">
+    <div class="col-md-1"></div>
+    <div class="navbar col-md-7">
         <a routerLink="/addproject">Add Project</a>
         <a routerLink="/addtask">Add Task</a>
         <a routerLink="/adduser" class="active">Add User</a>
@@ -37,4 +37,30 @@
         </div>
         <div class="col-md-2"></div>
     </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="form-group">
+                <input class="input-form col-sm-4" type="string" placeholder="Search..." [(ngModel)]="filter">
+
+                <label class="col-sm-1">Sort:</label>
+
+                <button style="margin-right: 6%" (click)="sort('firstName')">First Name</button>
+                <span class="glyphicon sort-icon" *ngIf="key == 'firstName'"
+                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+
+                <button style="margin-right: 6%" (click)="sort('lastName')">Last Name</button>
+                <span class="glyphicon sort-icon" *ngIf="key == 'lastName'"
+                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+
+                <button style="margin-right: 6%" (click)="sort('empId')">Id</button>
+                <span class="glyphicon sort-icon" *ngIf="key == 'empIde'"
+                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
 </div>

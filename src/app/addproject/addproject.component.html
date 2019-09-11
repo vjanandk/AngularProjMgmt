@@ -1,6 +1,6 @@
 <div class="navbar">
-    <div class="col-md-2"></div>
-    <div class="navbar col-md-8">
+    <div class="col-md-1"></div>
+    <div class="navbar col-md-7">
         <a routerLink="/addproject" class="active">Add Project</a>
         <a routerLink="/addtask">Add Task</a>
         <a routerLink="/adduser">Add User</a>
@@ -9,77 +9,107 @@
     <div class="col-md-2"></div>
 </div>
 
-<!-- <div class="container"> -->
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <div class="form-group">
-            <label class="col-md-2">Project :</label>
-            <input class="input-form col-md-10" type="string" placeholder="Project Name"
-                [(ngModel)]="projectData.projName" required />
-        </div>
-        <div class="form-row">
-            <div class="col-md-2"></div>
-            <div class="col-md-3">
-                <label> <input type="checkbox" [(ngModel)]="datesSec" />Set Start
-                    and End Date </label>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label class="col-md-2">Project :</label>
+                <input class="input-form col-md-7" type="string" placeholder="Project Name"
+                    [(ngModel)]="projectData.projName" required />
             </div>
-            <div *ngIf="datesSec" class="col-md-2">
-                <input class="input-form" type="date" style="text-align: center" placeholder="Start Date"
-                    [(ngModel)]="projectData.projStartDate" required />
+            <div class="form-row">
+                <div class="col-md-2"></div>
+                <div class="col-md-3">
+                    <label style="font-size: 14px"> <input type="checkbox" [(ngModel)]="datesSec" />Set Start
+                        and End Date </label>
+                </div>
+                <div *ngIf="datesSec" class="col-md-2">
+                    <input class="input-form" type="date" style="text-align: center" placeholder="Start Date"
+                        [(ngModel)]="projectData.projStartDate" required />
+                </div>
+                <div class="col-md-1"></div>
+                <div *ngIf="datesSec" class="col-md-2">
+                    <input class="input-form" type="date" style="text-align: center" placeholder="End Date"
+                        [(ngModel)]="projectData.projEndDate" required />
+                </div>
             </div>
-            <div class="col-md-1"></div>
-            <div *ngIf="datesSec" class="col-md-2">
-                <input class="input-form" type="date" style="text-align: center" placeholder="End Date"
-                    [(ngModel)]="projectData.projEndDate" required />
+            <!-- <br> -->
+            <div class="form-group" id="class_priority">
+                <label class="col-sm-2">Priority :</label>
+                <span>0</span>
+                <input class="custom-range col-sm-8" type="range" id="class_range"
+                    [(ngModel)]="projectData.projPriority" min="0" max="30" value="projectData.priority"
+                    oninput="class_priority.value=class_range.value">
+                <span>30</span>
             </div>
-        </div>
-        <!-- <br> -->
-        <div class="form-group" id="class_priority">
-            <label class="col-sm-2">Priority :</label>
-            <span>0</span>
-            <input class="custom-range col-sm-8" type="range" id="class_range" [(ngModel)]="projectData.projPriority"
-                min="0" max="30" value="projectData.priority" oninput="class_priority.value=class_range.value">
-            <span>30</span>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2">Manager :</label>
-            <input class="input-form col-sm-8" type="string" placeholder="Project Manager"
-                [(ngModel)]="userData.firstName" required>
-            <button data-toggle="modal" data-target="#myModal"> Search</button>
-        </div>
+            <div class="form-group">
+                <label class="col-sm-2">Manager :</label>
+                <input class="input-form col-sm-7" type="string" placeholder="Project Manager"
+                    [(ngModel)]="userData.userId" required>
+                <button type="button" data-toggle="modal" data-target="#myModal"> Search</button>
+            </div>
 
-        <div class="modal" id="#myModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">User List</h3>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <ul>
-                            <li *ngFor="let user of users">
-                                <ul class="list-group">
-                                    <li class="list-group-item list-group-item-action" data-dismiss="modal"
-                                        (click)="passBack(user)">{{users.firstName}}</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">User List</h3>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <ul>
+                                <li *ngFor="let user of users | filter: firstName">
+                                    <ul class="list-group col-6">
+                                        <li class="list-group-item list-group-item-action" data-dismiss="modal"
+                                            (click)="passBack(user)">{{user.firstName}}</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <form class="form-inline">
+                <div class="col-sm-8"></div>
+                <button (click)="addProject()" class="btn btn-primary" style="margin-right: 5px">Add</button>
+                <button (click)="reset()" class="btn btn-primary">Reset</button>
+            </form>
+            <div class="col-md-2"></div>
         </div>
-
-        <form class="form-inline">
-            <div class="col-sm-9"></div>
-            <button (click)="addProject()" class="btn btn-primary" style="margin-right: 5px">Add</button>
-            <button (click)="reset()" class="btn btn-primary">Reset</button>
-        </form>
-
     </div>
-    <div class="col-md-2"></div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="form-group">
+                <label class="col-sm-1"></label>
+                <input class="input-form col-sm-8" type="string" placeholder="Search..." [(ngModel)]="filter">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2">Sort By:</label>
+
+                <button style="margin-right: 6%" (click)="sort('projStartDate')">Start Date</button>
+                <span class="glyphicon sort-icon" *ngIf="key == 'projStartDate'"
+                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+
+                <button style="margin-right: 6%" (click)="sort('projEndDate')">End Date</button>
+                <span class="glyphicon sort-icon" *ngIf="key == 'projEndDate'"
+                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+
+                <button style="margin-right: 6%" (click)="sort('projPriority')">Priority</button>
+                <span class="glyphicon sort-icon" *ngIf="key == 'projPriority'"
+                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+
+                <button style="margin-right: 6%" (click)="sort('projPriority')">Completed</button>
+                <span class="glyphicon sort-icon" *ngIf="key == 'projPriority'"
+                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
 </div>
-<!-- </div> -->

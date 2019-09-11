@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import {
   MatButtonModule,
@@ -45,7 +45,8 @@ import { ViewtaskComponent } from './viewtask/viewtask.component';
     MatCheckboxModule,
     MatSelectModule,
     BrowserAnimationsModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    Ng2SearchPipeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

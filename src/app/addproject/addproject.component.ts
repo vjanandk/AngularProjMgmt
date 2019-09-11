@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestService } from '../rest.service';
-import { InvokeFunctionExpr } from '@angular/compiler';
-import { FormControl } from '@angular/forms';
+// import { InvokeFunctionExpr } from '@angular/compiler';
+// import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -29,7 +29,6 @@ export class AddprojectComponent implements OnInit {
   ngOnInit() {
     this.getProjects();
     this.getUsers();
-    console.log("Project Data : ", this.projectData)
   }
 
   addProject() {
@@ -44,21 +43,23 @@ export class AddprojectComponent implements OnInit {
       this.rest.getProject(this.projectData.projName).subscribe((data: {}) => {
         console.log("getProject - data : ", data);
         console.log("users - data : ", this.users);
-        console.log("data [] : ", data[0]);
+        console.log("data [0] : ", data[0]);
         console.log("data[0].projId : ", data[0].projId);
         // this.projects = data;
         this.users[0].projId = data[0].projId;
         this.rest.putUser(this.users[0]).subscribe(() => {
           console.log("putUser - this.users : ", this.users);
+          this.projectData = { projName: '', projStartDate: '', projEndDate: '', projPriority: '0'};
+          this.userData.firstName ='';
         })
       })
-      // this.projectData = { projName: '', projStartDate: '', projEndDate: '', projPriority: '', projManager: '' };
+
     })
   }
 
   getUsers() {
     this.users = [];
-    this.rest.getUsers().subscribe((data: {}) => {
+    this.rest.getUsers().subscribe((data) => {
       console.log("getUsers - data : ", data);
       this.users = data;
     })
@@ -84,5 +85,5 @@ export class AddprojectComponent implements OnInit {
 }
 
 function dateFormatter(date) {
-  return `${date.getFullYear()}-${("0" + date.getMonth()).slice(-2)}-${("0"+date.getDate()).slice(-2)}`;
+  return `${date.getFullYear()}-${("0" + date.getMonth()).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
 }
