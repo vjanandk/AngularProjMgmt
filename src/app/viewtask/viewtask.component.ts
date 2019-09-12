@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RestService } from '../rest.service';
+
 
 @Component({
   selector: 'app-viewtask',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewtaskComponent implements OnInit {
 
-  constructor() { }
+  projects: any = [];
+  users: any = [];
+  ptasks: any = [];
+  tasks: any = [];
+
+  @Input() tasksData = {projName:''};
+
+  constructor(public rest: RestService, private activatedRouter: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+
   }
 
 }

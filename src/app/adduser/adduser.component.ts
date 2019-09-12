@@ -11,8 +11,8 @@ export class AdduserComponent implements OnInit {
 
   users: any = [];
 
-  @Input() userData = { firstName: '', lastName: '', empId: '', projId: '0', taskId: '0' };
-
+  @Input() userData = { firstName: '', lastName: '', empId: '', projId: 0, taskId: 0 };
+  
   constructor(public rest: RestService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
@@ -20,12 +20,12 @@ export class AdduserComponent implements OnInit {
   }
 
   reset() {
-    this.userData = { firstName: '', lastName: '', empId: '', projId: '', taskId: '' };
+    this.userData = { firstName: '', lastName: '', empId: '', projId: 0, taskId: 0 };
   }
 
   addUser() {
     this.rest.addUser(this.userData).subscribe(() => {
-      this.userData = { firstName: '', lastName: '', empId: '', projId: '', taskId: '' };
+      this.userData = { firstName: '', lastName: '', empId: '', projId: 0, taskId: 0 };
     })
   }
 

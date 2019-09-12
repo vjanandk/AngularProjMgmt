@@ -46,16 +46,16 @@
 
                 <label class="col-sm-1">Sort:</label>
 
-                <button style="margin-right: 6%" (click)="sort('firstName')">First Name</button>
+                <button style="margin-right: 5%" (click)="sort('firstName')">First Name</button>
                 <span class="glyphicon sort-icon" *ngIf="key == 'firstName'"
                     [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
 
-                <button style="margin-right: 6%" (click)="sort('lastName')">Last Name</button>
+                <button style="margin-right: 5%" (click)="sort('lastName')">Last Name</button>
                 <span class="glyphicon sort-icon" *ngIf="key == 'lastName'"
                     [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
 
-                <button style="margin-right: 6%" (click)="sort('empId')">Id</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'empIde'"
+                <button style="margin-right: 5%" (click)="sort('empId')">Emp Id</button>
+                <span class="glyphicon sort-icon" *ngIf="key == 'empId'"
                     [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
 
             </div>

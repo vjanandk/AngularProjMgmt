@@ -1,9 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestService } from '../rest.service';
-// import { InvokeFunctionExpr } from '@angular/compiler';
-// import { FormControl } from '@angular/forms';
-
 
 @Component({
   selector: 'app-addproject',
@@ -27,7 +24,6 @@ export class AddprojectComponent implements OnInit {
   constructor(public rest: RestService, private activatedRouter: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.getProjects();
     this.getUsers();
   }
 
@@ -38,38 +34,28 @@ export class AddprojectComponent implements OnInit {
     }
 
     this.rest.addPrjoect(this.projectData).subscribe(() => {
-      console.log("addProject - projectData : ", this.projectData)
-      console.log("this.projectData.projName : ", this.projectData.projName);
-      this.rest.getProject(this.projectData.projName).subscribe((data: {}) => {
-        console.log("getProject - data : ", data);
-        console.log("users - data : ", this.users);
-        console.log("data [0] : ", data[0]);
-        console.log("data[0].projId : ", data[0].projId);
-        // this.projects = data;
-        this.users[0].projId = data[0].projId;
-        this.rest.putUser(this.users[0]).subscribe(() => {
-          console.log("putUser - this.users : ", this.users);
-          this.projectData = { projName: '', projStartDate: '', projEndDate: '', projPriority: '0'};
-          this.userData.firstName ='';
+      console.log(`TS - addProject : ${this.projectData}`)
+      this.rest.getProject(this.projectData.projName).subscribe((proj) => {
+        console.log(`TS - getProject : ${proj}`)
+        let userId = 1;  //Need to update this
+        this.rest.getUser(userId).subscribe((user) => {
+          console.log(`TS - getUser : ${user}`)
+          user.projId = proj.projId;
+          this.rest.putUser(user).subscribe(() => {
+            console.log(`TS - putUser : ${user}`);
+            this.projectData = { projName: '', projStartDate: '', projEndDate: '', projPriority: '0' };
+            this.userData.firstName = '';
+          })
         })
       })
-
     })
   }
 
   getUsers() {
     this.users = [];
     this.rest.getUsers().subscribe((data) => {
-      console.log("getUsers - data : ", data);
+      console.log("TS - getUsers - data : ", data);
       this.users = data;
-    })
-  }
-
-  getProjects() {
-    this.projects = [];
-    this.rest.getProjects().subscribe((data) => {
-      console.log("getProjects - data : ", data);
-      this.projects = data;
     })
   }
 
