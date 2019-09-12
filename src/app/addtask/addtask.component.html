@@ -9,7 +9,6 @@
     <div class="col-md-2"></div>
 </div>
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-2"></div>
@@ -24,7 +23,9 @@
             <div class="form-group">
                 <label class="col-sm-2">Task :</label>
                 <input class="input-form col-sm-8" type="string" [(ngModel)]="ptaskData.taskNameParent"
-                    placeholder="(Parent) Task Name" required>
+                    placeholder="Parent Task Name" *ngIf="ptaskCheck" required>
+                <input class="input-form col-sm-8" type="string" [(ngModel)]="ptaskData.taskNameParent"
+                    placeholder="Task Name" *ngIf="!ptaskCheck" required>
             </div>
 
             <div class="form-row">
@@ -33,7 +34,7 @@
                     <label> <input type="checkbox" [(ngModel)]="ptaskCheck" />Parent Task</label>
                 </div>
             </div>
-            <div class="form-group" id="class_priority">
+            <div class="form-group" id="class_priority" *ngIf="!ptaskCheck">
                 <label class="col-sm-2">Priority :</label>
                 <span>0</span>
                 <input class="custom-range col-sm-8" type="range" id="class_range" [(ngModel)]="taskData.taskPriority"
@@ -41,15 +42,14 @@
                 <span>30</span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" *ngIf="!ptaskCheck">
                 <label class="col-md-2">Parent Task :</label>
                 <input class="input-form col-md-7" type="string" placeholder="Parent Task"
                     [(ngModel)]="ptaskData.taskNameParent" required />
                 <button data-toggle="modal" data-target="popup"> Search</button>
             </div>
 
-            <div class="form-inline">
-
+            <div class="form-inline" *ngIf="!ptaskCheck">
                 <label class="col-md-2">Start Date :</label>
                 <input class="input-form col-sm-3" type="string" style="text-align: center" placeholder="Start Date"
                     [(ngModel)]="taskData.taskStartDate" required />
@@ -59,7 +59,7 @@
             </div>
             <br>
 
-            <div class="form-group">
+            <div class="form-group" *ngIf="!ptaskCheck">
                 <label class="col-sm-2">User :</label>
                 <input class="input-form col-sm-7" type="string" placeholder="User" [(ngModel)]="userData.userId"
                     required>
