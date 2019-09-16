@@ -8,8 +8,6 @@ const endPoint = '/api/';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
-    // 'Access-Control-Allow-Origin': 'http://localhost:4200',
-    // 'Access-Control-Allow-Methods': '*'
   })
 };
 
@@ -45,10 +43,24 @@ export class RestService {
       map(this.extractData));
   }
 
+  getManager(projId): Observable<any> {
+    console.log("Rest - getUser : ", projId);
+    let taskId = 0;
+    return this.http.get<any>(endPoint + 'users' + '/' + projId + '/' + taskId).pipe(
+      map(this.extractData));
+  }
+
   putUser(user): Observable<any> {
     console.log("Rest - putUser : ", user);
     return this.http.put<any>(endPoint + 'users', JSON.stringify(user), httpOptions).pipe(
       catchError(this.handleError<any>('putUser'))
+    );
+  }
+
+  deleteUser(empId): Observable<any> {
+    console.log("Rest - deleteUser : ", empId);
+    return this.http.delete<any>(endPoint + 'users' + '/' + empId, httpOptions).pipe(
+      catchError(this.handleError<any>('deleteUser'))
     );
   }
 
@@ -69,6 +81,13 @@ export class RestService {
       map(this.extractData));
   }
 
+  deleteProject(projId): Observable<any> {
+    console.log("Rest - deleteProject : ", projId);
+    return this.http.delete<any>(endPoint + 'projects' + '/' + projId, httpOptions).pipe(
+      catchError(this.handleError<any>('deleteProject'))
+    );
+  }
+
   addParentTask(ptask): Observable<any> {
     console.log("Rest - addParentTask : ", ptask);
     return this.http.post<any>(endPoint + 'parenttasks', JSON.stringify(ptask), httpOptions).pipe(
@@ -81,8 +100,13 @@ export class RestService {
       map(this.extractData));
   }
 
-  getParentTask(ptaskName): Observable<any> {
-    return this.http.get(endPoint + `projects/${ptaskName}`).pipe(
+  getPtaskById(parentId): Observable<any> {
+    return this.http.get(endPoint + `parenttasks/${parentId}`).pipe(
+      map(this.extractData));
+  }
+
+  getPtaskByName(ptaskName, parentId): Observable<any> {
+    return this.http.get(endPoint + `parenttasks/${ptaskName}/${parentId}`).pipe(
       map(this.extractData));
   }
 
@@ -103,14 +127,16 @@ export class RestService {
       map(this.extractData));
   }
 
-
-
+  getTaskByProjId(projId, taskId): Observable<any> {
+    return this.http.get(endPoint + `tasks/${projId}/${taskId}`).pipe(
+      map(this.extractData));
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
       console.log(error);
-      console.log(`${operation} has been failed : ${error.message}`);
+      // console.log(`${operation} has been failed : ${error.message}`);
       return of(result as T);
 
     }

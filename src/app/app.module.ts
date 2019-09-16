@@ -5,17 +5,18 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {DropdownModule} from 'primeng/dropdown';
 
-import {
-  MatButtonModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatRippleModule,
-  MatNativeDateModule,
-  MatCheckboxModule,
-  MatSelectModule,
-  MatDatepickerModule
-} from '@angular/material';
+// import {
+//   MatButtonModule,
+//   MatFormFieldModule,
+//   MatInputModule,
+//   MatRippleModule,
+//   MatNativeDateModule,
+//   MatCheckboxModule,
+//   MatSelectModule,
+//   MatDatepickerModule
+// } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import { AddprojectComponent } from './addproject/addproject.component';
 import { AdduserComponent } from './adduser/adduser.component';
 import { AddtaskComponent } from './addtask/addtask.component';
 import { ViewtaskComponent } from './viewtask/viewtask.component';
+import {DialogModule} from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -37,15 +39,17 @@ import { ViewtaskComponent } from './viewtask/viewtask.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRippleModule,
-    MatNativeDateModule,
-    MatCheckboxModule,
-    MatSelectModule,
+    DropdownModule,
+    DialogModule,
+    // MatButtonModule,
+    // MatFormFieldModule,
+    // MatInputModule,
+    // MatRippleModule,
+    // MatNativeDateModule,
+    // MatCheckboxModule,
+    // MatSelectModule,
     BrowserAnimationsModule,
-    MatDatepickerModule,
+    // MatDatepickerModule,
     Ng2SearchPipeModule
   ],
   providers: [],

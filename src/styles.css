@@ -2,3 +2,16 @@
 
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css";
+
+
+/* Overrides list-group-item from Bootstrap */ 
+.dialoglist {
+    padding: 0.5% 2%;
+    list-style-type: none;
+}
+
+.viewlist {
+    padding: 0.5% 0.5%;
+    border-style: none;
+    background-color:#f2f2f2;
+}
