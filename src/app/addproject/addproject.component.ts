@@ -91,6 +91,13 @@ export class AddprojectComponent implements OnInit {
       for (let proj of projs) {
         this.rest.getTaskByProjId(proj.projId, 0).subscribe((tasks) => {
           proj["projNoOfTasks"] = tasks.length;
+          let tempCount = 0;
+          for (let task of tasks){
+            if(task.taskStatus == "Completed"){
+              tempCount = tempCount + 1;
+            }
+          }
+          proj["noOfCompleted"] = tempCount;
           console.log("Proj - : ", proj)
         })
         this.projects.push(proj);

@@ -17,6 +17,7 @@ export class ViewtaskComponent implements OnInit {
   viewtask = {};
 
   listProject: boolean = false;
+  completedTask: boolean = false;
 
   taskData = { taskId: 0, parentId: 0, projId: 0, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: '' };
   ptaskData = { parentId: 0, taskNameParent: '' };
@@ -41,16 +42,22 @@ export class ViewtaskComponent implements OnInit {
   }
 
   viewTask() {
+    this.tasks = [];
     this.rest.getTaskByProjId(this.projectData.projId, 0).subscribe((tasks) => {
       console.log("TS - getTask : ", tasks);
       for (let task of tasks) {
         this.taskData = task;
+        this.completedTask = false;
+        if (task.taskStatus == "Completed") {
+          this.completedTask = true;
+        }
+        task["taskNameParent"] = "None";
         if (this.taskData.parentId != 0) {
           console.log("this.taskData.parentId : ", this.taskData.parentId)
           this.rest.getPtaskById(this.taskData.parentId).subscribe((ptask) => {
             console.log("TS - getParentTask : ", ptask);
             this.ptaskData = ptask;
-            task["taskNameParent"] = this.ptaskData.taskNameParent;
+            task.taskNameParent = this.ptaskData.taskNameParent;
           })
         }
         this.tasks.push(task);
@@ -64,6 +71,13 @@ export class ViewtaskComponent implements OnInit {
     this.rest.getProjects().subscribe((data) => {
       console.log("TS - getProjects : ", data);
       this.projects = data;
+    })
+  }
+
+  endTask(task) {
+    console.log("task : ", task)
+    this.rest.setEndTask(task.taskId).subscribe(() => {
+      console.log("TS - endTask : ", task.taskId);
     })
   }
 }

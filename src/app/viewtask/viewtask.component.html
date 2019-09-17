@@ -102,13 +102,23 @@
                             </li>
                         </ul>
                         <ul class="col list-group" style="list-style-type: none;">
-                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px">
+                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px"
+                                *ngIf="!completedTask">
+                                <p style="text-align: center; margin: 0%;padding: 0%;">Edit
+                            </button>
+                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px"
+                                *ngIf="completedTask" disabled>
                                 <p style="text-align: center; margin: 0%;padding: 0%;">Edit
                             </button>
                         </ul>
                         <ul class="col list-group" style="list-style-type: none;">
-                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px">
-                                <p style="text-align: center; margin: 0%;padding: 0%;">Complete
+                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px"
+                                (click)="endTask(task)" *ngIf="!completedTask">
+                                <p style="text-align: center; margin: 0%;padding: 0%;">End Task
+                            </button>
+                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px"
+                                (click)="endTask(task)" *ngIf="completedTask" disabled>
+                                <p style="text-align: center; margin: 0%;padding: 0%;">End Task
                             </button>
                         </ul>
                     </div>

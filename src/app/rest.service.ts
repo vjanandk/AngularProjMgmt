@@ -132,6 +132,12 @@ export class RestService {
       map(this.extractData));
   }
 
+  setEndTask(taskId): Observable<any> {
+    return this.http.put<any>(endPoint + `tasks/${taskId}`, httpOptions).pipe(
+      catchError(this.handleError<any>('setEndTask'))
+    )
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 

@@ -118,14 +118,12 @@ export class AddtaskComponent implements OnInit {
   }
 
   cancel() {
-    // this.taskData = { parentId: 0, projId: 0, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: '' };
-    // this.ptaskData = { parentId: 0, taskNameParent: '' };
-    // this.userData = { userId:0, firstName: '', lastName: '', empId: '', projId: 0, taskId: 0 };
-    // this.projectData = { projId: 0,projName: '', projStartDate: '', projEndDate: '', projPriority: '0' };
-    this.taskData = { parentId: null, projId: null, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: '' };
+ 
+    this.taskData = { parentId: null, projId: null, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: 'ready' };
     this.ptaskData = { taskNameParent: '' };
     this.userData = { userId: null, firstName: '', lastName: '', empId: '', projId: null, taskId: null };
     this.projectData = { projId: null, projName: '', projStartDate: '', projEndDate: '', projPriority: '0' };
+    this.parentId = '';
   }
 
 }
