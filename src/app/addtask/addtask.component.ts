@@ -14,43 +14,62 @@ export class AddtaskComponent implements OnInit {
   users: any = [];
   ptasks: any = [];
   tasks: any = [];
+  listProject: boolean = false;
+  listParentTask: boolean = false;
+  listUser: boolean = false;
+  parentId: any = null;
 
-  @Input() taskData = { parentId: 0, projId: 0, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: '' };
+  @Input() taskData = { parentId: null, projId: null, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: 'ready' };
   @Input() ptaskData = { taskNameParent: '' };
-  @Input() userData = { firstName: '', lastName: '', empId: '', projId: 0 , taskId: 0 };
-  @Input() projectData = { projName: '', projStartDate: '', projEndDate: '', projPriority: '0' };
+  @Input() userData = { userId: null, firstName: '', lastName: '', empId: '', projId: null, taskId: null };
+  @Input() projectData = { projId: null, projName: '', projStartDate: '', projEndDate: '', projPriority: '0' };
 
   constructor(public rest: RestService, private activatedRouter: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.getUsers();
+    // this.getParentTasks();
+    // this.getUsers();
+    // this.getProjects();
+  }
+
+  listProjects() {
+    this.listProject = true;
+    this.getProjects();
+  }
+
+  listParentTasks() {
+    this.listParentTask = true;
     this.getParentTasks();
   }
 
+  listUsers() {
+    this.getUsers();
+    this.listUser = true;
+  }
+
   addParentTask() {
-    this.ptaskData.taskNameParent = this.taskData.taskName;
     this.rest.addParentTask(this.ptaskData).subscribe(() => {
-      console.log(`TS - addParentTask : ${this.ptaskData}`)
+      console.log("TS - addParentTask : ", this.ptaskData)
+      this.cancel();
     })
   }
 
   addTask() {
-    this.taskData.parentId = 3;
-    this.taskData.projId = 2;
+    this.taskData.parentId = this.parentId;
+    this.taskData.projId = this.projectData.projId;
 
     this.rest.addTask(this.taskData).subscribe(() => {
-      console.log(`TS - addTask : ${this.taskData}`)
+      console.log("TS - addTask : ", this.taskData)
       this.rest.getTask(this.taskData.taskName).subscribe((task) => {
-        console.log(`TS - getTask : ${task}`)
-        let userId = 1;  //Need to update this
-        this.rest.getUser(userId).subscribe((user) => {
-          console.log(`TS - getUser : ${user}`)
+        console.log("TS - getTask : ", task)
+        // let userId = 1;  //Need to update this
+        this.rest.getUser(this.userData.userId).subscribe((user) => {
+          console.log("TS - getUser : ", user)
           user.taskId = task.taskId;
+          user.projId = task.projId;
           this.rest.putUser(user).subscribe(() => {
-            console.log(`TS - putUser : ${user}`);
-            this.taskData = { parentId: 0, projId: 0, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: '' };
-            this.userData = { firstName: '', lastName: '', empId: '', projId: 0 , taskId: 0 };
-            this.ptaskData = { taskNameParent: '' };
+            console.log("TS - putUser : ", user);
+            this.cancel();
           })
         })
 
@@ -61,7 +80,7 @@ export class AddtaskComponent implements OnInit {
   getProjects() {
     this.projects = [];
     this.rest.getProjects().subscribe((data) => {
-      console.log(`TS - getProjects :  ${data}`);
+      console.log("TS - getProjects : ", data);
       this.projects = data;
     })
   }
@@ -69,7 +88,7 @@ export class AddtaskComponent implements OnInit {
   getParentTasks() {
     this.ptasks = [];
     this.rest.getParentTasks().subscribe((data) => {
-      console.log(`TS - getParentTasks :  ${data}`);
+      console.log("TS - getParentTasks : ", data);
       this.ptasks = data;
     })
   }
@@ -80,6 +99,31 @@ export class AddtaskComponent implements OnInit {
       console.log("TS - getUsers - data : ", data);
       this.users = data;
     })
+  }
+
+  passBackProj(project) {
+    console.log("TS - passBack project : ", project);
+    this.projectData = project;
+  }
+
+  passBackPtask(ptask) {
+    console.log("TS - passBack ptask : ", ptask);
+    this.ptaskData.taskNameParent = ptask.taskNameParent;
+    this.parentId = ptask.parentId;
+  }
+
+  passBackUser(user) {
+    console.log("TS - passBack user : ", user);
+    this.userData = user;
+  }
+
+  cancel() {
+ 
+    this.taskData = { parentId: null, projId: null, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: 'ready' };
+    this.ptaskData = { taskNameParent: '' };
+    this.userData = { userId: null, firstName: '', lastName: '', empId: '', projId: null, taskId: null };
+    this.projectData = { projId: null, projName: '', projStartDate: '', projEndDate: '', projPriority: '0' };
+    this.parentId = '';
   }
 
 }

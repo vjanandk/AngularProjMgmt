@@ -1,9 +1,9 @@
 <div class="navbar">
     <div class="col-md-1"></div>
     <div class="navbar col-md-7">
-        <a routerLink="/addproject">Add Project</a>
-        <a routerLink="/addtask">Add Task</a>
-        <a routerLink="/adduser">Add User</a>
+        <a style="color: black" routerLink="/addproject">Add Project</a>
+        <a style="color: black" routerLink="/addtask">Add Task</a>
+        <a style="color: black" routerLink="/adduser">Add User</a>
         <a routerLink="/viewtask" class="active">View Task</a>
     </div>
     <div class="col-md-2"></div>
@@ -15,29 +15,127 @@
         <div class="col-sm-12">
             <div class="form-group">
                 <label class="col-sm-1">Project :</label>
-                <input class="input-form col-sm-3" type="string" placeholder="Project" [(ngModel)]="taskData.projName"
-                    required>
-                <button type="button" data-toggle="modal" data-target="#myModal"> Search</button>
+                <input class="input-form col-sm-3" type="string" placeholder="Project"
+                    [(ngModel)]="projectData.projName" required>
+                <button type="button" (click)="listProjects()"> Search</button>
 
                 <label class="col-sm-2">Sort Task By:</label>
 
-                <button style="margin-right: 1.5%" (click)="sort('projStartDate')">Start Date</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projStartDate'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 1.5%" (click)="sortByKey(tasks,'taskStartDate')">Start Date</button>
 
-                <button style="margin-right: 1.5%" (click)="sort('projEndDate')">End Date</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projEndDate'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 1.5%" (click)="sortByKey(tasks,'taskEndDate')">End Date</button>
 
-                <button style="margin-right: 1.5%" (click)="sort('projPriority')">Priority</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projPriority'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 1.5%" (click)="sortByKey(tasks,'taskPriority')">Priority</button>
 
-                <button style="margin-right: 1.5%" (click)="sort('projPriority')">Completed</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projPriority'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 1.5%" (click)="sortByKey(tasks,'taskStatus')">Completed</button>
             </div>
         </div>
     </div>
     <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="tasks list-group col-12" style="list-style-type: none;">
+                <li *ngFor="let task of tasks">
+                    <div class="row" style="text-align: center">
+                        <div class="col-3">
+                            <p>Task</p>
+                        </div>
+                        <div class="col-3">
+                            <p>Parent</p>
+                        </div>
+                        <div class="col">
+                            <p>Priority</p>
+                        </div>
+                        <div class="col">
+                            <p>Start</p>
+                        </div>
+                        <div class="col">
+                            <p>End</p>
+                        </div>
+                        <div class="col">
+                            <p></p>
+                        </div>
+                        <div class="col">
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="list-group col-3" style="list-style-type: none;">
+                            <li class="viewlist list-group-item list-group-item-action" style="padding: 5px">
+                                <p style="text-align: left; margin: 0%;padding: 2%">{{task.taskName}}</p>
+                            </li>
+                        </ul>
+                        <ul class="list-group col-3" style="list-style-type: none;">
+                            <li class="viewlist list-group-item list-group-item-action" style="padding: 5px">
+                                <p style="text-align: left; margin: 0%;padding: 2%">{{task.taskNameParent}}</p>
+                            </li>
+                        </ul>
+                        <ul class="col-1" style="border-style: none;">
+                            <li class="list-group-item list-group-item-action" style="border-style: none; padding: 5px">
+                                <p style="text-align: center; margin: 0%;padding: 0%;font-size: 80%;">
+                                    {{task.taskPriority}}</p>
+                            </li>
+                        </ul>
+
+                        <ul class="col-1.25" style="border-style: none">
+                            <li class="list-group-item list-group-item-action" style="border-style: none; padding: 5px">
+                                <p style="text-align: center; margin: 0%;padding: 0%;font-size: 80%;">
+                                    {{task.taskStartDate}}</p>
+                            </li>
+                        </ul>
+
+                        <ul class="col-1.5" style="border-style: none">
+                            <li class="list-group-item list-group-item-action" style="border-style: none; padding: 5px">
+                                <p style="text-align: center; margin: 0%;padding: 0%;font-size: 80%;">
+                                    {{task.taskEndDate}}</p>
+                            </li>
+                        </ul>
+                        <ul class="col list-group" style="list-style-type: none;">
+                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px"
+                                *ngIf="!task.completedTask">
+                                <p style="text-align: center; margin: 0%;padding: 0%;" routerLink="/addtask">Edit
+                            </button>
+                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px"
+                                *ngIf="task.completedTask" disabled>
+                                <p style="text-align: center; margin: 0%;padding: 0%;">Edit
+                            </button>
+                        </ul>
+                        <ul class="col list-group" style="list-style-type: none;">
+                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px"
+                                (click)="endTask(task)" *ngIf="!task.completedTask">
+                                <p style="text-align: center; margin: 0%;padding: 0%;">End Task
+                            </button>
+                            <button class="listbtncss list-group-item list-group-item-action" style="padding: 5px"
+                                (click)="endTask(task)" *ngIf="task.completedTask" disabled>
+                                <p style="text-align: center; margin: 0%;padding: 0%;">End Task
+                            </button>
+                        </ul>
+                    </div>
+                    <hr>
+                    <!-- </li>
+                    </ul> -->
+                </li>
+            </ul>
+        </div>
+
+    </div>
 </div>
+
+<p-dialog header="Projects List" [(visible)]="listProject" [modal]="true" [responsive]="true"
+    [style]="{width: '40%', minWidth: '30%'}" [maximizable]="true">
+
+    <ul class="dialoglist">
+        <li *ngFor="let project of projects | filter: projName">
+            <ul class="list-group">
+                <button class="dialoglist list-group-item list-group-item-action" (click)="passBackProj(project)">
+                    {{project.projName}}</button>
+            </ul>
+        </li>
+    </ul>
+
+    <p-footer>
+        <button type="button" pButton (click)="listProject=false">Close</button>
+    </p-footer>
+
+</p-dialog>

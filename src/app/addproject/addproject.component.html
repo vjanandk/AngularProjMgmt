@@ -2,9 +2,9 @@
     <div class="col-md-1"></div>
     <div class="navbar col-md-7">
         <a routerLink="/addproject" class="active">Add Project</a>
-        <a routerLink="/addtask">Add Task</a>
-        <a routerLink="/adduser">Add User</a>
-        <a routerLink="/viewtask">View Task</a>
+        <a style="color: black" routerLink="/addtask">Add Task</a>
+        <a style="color: black" routerLink="/adduser">Add User</a>
+        <a style="color: black" routerLink="/viewtask">View Task</a>
     </div>
     <div class="col-md-2"></div>
 </div>
@@ -21,15 +21,15 @@
             <div class="form-row">
                 <div class="col-md-2"></div>
                 <div class="col-md-3">
-                    <label style="font-size: 14px"> <input type="checkbox" [(ngModel)]="datesSec" />Set Start
+                    <label style="font-size: 14px"> <input type="checkbox" [(ngModel)]="setDate" />Set Start
                         and End Date </label>
                 </div>
-                <div *ngIf="datesSec" class="col-md-2">
+                <div *ngIf="setDate" class="col-md-2">
                     <input class="input-form" type="date" style="text-align: center" placeholder="Start Date"
                         [(ngModel)]="projectData.projStartDate" required />
                 </div>
                 <div class="col-md-1"></div>
-                <div *ngIf="datesSec" class="col-md-2">
+                <div *ngIf="setDate" class="col-md-2">
                     <input class="input-form" type="date" style="text-align: center" placeholder="End Date"
                         [(ngModel)]="projectData.projEndDate" required />
                 </div>
@@ -43,40 +43,19 @@
                     oninput="class_priority.value=class_range.value">
                 <span>30</span>
             </div>
+
             <div class="form-group">
                 <label class="col-sm-2">Manager :</label>
-                <input class="input-form col-sm-7" type="string" placeholder="Project Manager"
-                    [(ngModel)]="userData.userId" required>
-                <button type="button" data-toggle="modal" data-target="#myModal"> Search</button>
+                <input class="input-form col-sm-7" type="string" [(ngModel)]="userData.firstName"
+                    placeholder="Project Manager" disabled>
+                <button type="button" (click)="listUsers()"> Search</button>
             </div>
-
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title">User List</h3>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <ul>
-                                <li *ngFor="let user of users | filter: firstName">
-                                    <ul class="list-group col-6">
-                                        <li class="list-group-item list-group-item-action" data-dismiss="modal"
-                                            (click)="passBack(user)">{{user.firstName}}</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <form class="form-inline">
                 <div class="col-sm-8"></div>
-                <button (click)="addProject()" class="btn btn-primary" style="margin-right: 5px">Add</button>
+                <button (click)="addProject()" *ngIf="!checkUpd" class="btn btn-primary"
+                    style="margin-right: 5px">Add</button>
+                <button (click)="addProject()" *ngIf="checkUpd" class="btn btn-primary"
+                    style="margin-right: 5px">Update</button>
                 <button (click)="reset()" class="btn btn-primary">Reset</button>
             </form>
             <div class="col-md-2"></div>
@@ -93,23 +72,112 @@
             <div class="form-group">
                 <label class="col-sm-2">Sort By:</label>
 
-                <button style="margin-right: 6%" (click)="sort('projStartDate')">Start Date</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projStartDate'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 6%" (click)="sortByKey(projects,'projStartDate')">Start Date</button>
 
-                <button style="margin-right: 6%" (click)="sort('projEndDate')">End Date</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projEndDate'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 6%" (click)="sortByKey(projects,'projEndDate')">End Date</button>
 
-                <button style="margin-right: 6%" (click)="sort('projPriority')">Priority</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projPriority'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 6%" (click)="sortByKey(projects,'projPriority')">Priority</button>
 
-                <button style="margin-right: 6%" (click)="sort('projPriority')">Completed</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projPriority'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 6%" (click)="sortByKey(projects,'projPriority')">Completed</button>
+
             </div>
         </div>
         <div class="col-md-2"></div>
     </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <ul class="projects" style="list-style-type: none;">
+                <li *ngFor="let project of projects | filter:filter ">
+                    <div class="row">
+                        <ul class="viewlist list-group col-6" style="list-style-type: none;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <li class="viewlist col-12 list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            Project : </span> {{project.projName}}
+                                    </li>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <li class="viewlist list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            No of Tasks : </span> {{project.projNoOfTasks}}
+                                    </li>
+                                </div>
+                                <div class="col-6">
+                                    <li class="viewlist list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            Completed : </span> {{project.noOfCompleted}}
+                                    </li>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <li class="viewlist list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            Start Date : </span> {{project.projStartDate}}
+                                    </li>
+                                </div>
+                                <div class="col-6">
+                                    <li class="viewlist list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            End Date : </span> {{project.projEndDate}}</li>
+                                </div>
+                            </div>
+                        </ul>
+                        <ul class="list-group col-1" style="list-style-type: none; padding: 0px 5px;">
+                            <div class="row-2">
+                                <label style="font-weight: 500; padding: 0px 5px;">Priority</label>
+                            </div>
+                            <div class="row-3">
+                                <li class="viewlist list-group-item list-group-item-action"
+                                    style="text-align: center; padding: 50% 5%;">
+                                    <p style="text-align: center;">{{project.projPriority}}</p>
+                                </li>
+                            </div>
+                        </ul>
+
+                        <ul class="list-group col-2" style="list-style-type: none;">
+                            <div class="row-3">
+                                <button class="listbtncss list-group-item list-group-item-action"
+                                    (click)="updateProj(project);"
+                                    style="text-align: center; padding: 9% 0%;">Update</button>
+                            </div>
+                            <div class="row-3">
+                                <button class="listbtncss list-group-item list-group-item-action"
+                                    (click)="suspendProj(project)"
+                                    style="text-align: center; padding: 9% 0%;">Suspend</button>
+                            </div>
+                        </ul>
+                    </div>
+                    <hr>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
 </div>
+
+
+<p-dialog header="Users List" [(visible)]="display" [modal]="true" [responsive]="true"
+    [style]="{width: '60%', minWidth: '50%'}" [maximizable]="true">
+
+    <ul class="dialoglist">
+        <li *ngFor="let user of users | filter: firstName">
+            <ul class="list-group">
+                <button class="dialoglist list-group-item list-group-item-action" (click)="passBack(user)">
+                    {{user.firstName}} {{user.lastName}}</button>
+            </ul>
+        </li>
+    </ul>
+
+    <p-footer>
+        <button type="button" pButton (click)="display=false">Close</button>
+    </p-footer>
+
+</p-dialog>

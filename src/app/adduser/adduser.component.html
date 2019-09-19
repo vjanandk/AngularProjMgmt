@@ -1,10 +1,10 @@
 <div class="navbar">
     <div class="col-md-1"></div>
     <div class="navbar col-md-7">
-        <a routerLink="/addproject">Add Project</a>
-        <a routerLink="/addtask">Add Task</a>
+        <a style="color: black" routerLink="/addproject">Add Project</a>
+        <a style="color: black" routerLink="/addtask">Add Task</a>
         <a routerLink="/adduser" class="active">Add User</a>
-        <a routerLink="/viewtask">View Task</a>
+        <a style="color: black" routerLink="/viewtask">View Task</a>
     </div>
     <div class="col-md-2"></div>
 </div>
@@ -25,12 +25,15 @@
             </div>
             <div class="form-group">
                 <label class="col-sm-3">Employee ID :</label>
-                <input class="input-form col-sm-3" type="number" placeholder="Employee ID" [(ngModel)]="userData.empId"
+                <input class="input-form col-sm-3" type="tel" placeholder="Employee ID" [(ngModel)]="userData.empId"
                     required />
             </div>
             <form class="form-inline">
                 <div class="col-md-6"></div>
-                <button (click)="addUser()" class="btn btn-primary" style="margin-right: 10px">Add</button>
+                <button (click)="addUser()" *ngIf="!checkUpd" class="btn btn-primary"
+                    style="margin-right: 10px">Add</button>
+                <button (click)="addUser()" *ngIf="checkUpd" class="btn btn-primary"
+                    style="margin-right: 10px">Update</button>
                 <button (click)="reset()" class="btn btn-primary">Reset</button>
             </form>
 
@@ -46,19 +49,38 @@
 
                 <label class="col-sm-1">Sort:</label>
 
-                <button style="margin-right: 5%" (click)="sort('firstName')">First Name</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'firstName'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 5%" (click)="sortByKey(users,'firstName')">First Name</button>
 
-                <button style="margin-right: 5%" (click)="sort('lastName')">Last Name</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'lastName'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 5%" (click)="sortByKey(users,'lastName')">Last Name</button>
 
-                <button style="margin-right: 5%" (click)="sort('empId')">Emp Id</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'empId'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 5%" (click)="sortByKey(users,'empId')">Emp Id</button>
 
             </div>
+
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-9">
+            <ul class="users" style="list-style-type: none;">
+                <li *ngFor="let user of users | filter:filter ">
+                    <div class="row">
+                        <ul class="list-group col-6" style="list-style-type: none;">
+                            <li class="list-group-item list-group-item-action">{{user.firstName}}</li>
+                            <li class="list-group-item list-group-item-action">{{user.lastName}}</li>
+                            <li class="list-group-item list-group-item-action">{{user.empId}}</li>
+                        </ul>
+                        <ul class="list-group col-3" style="list-style-type: none;">
+                            <button class="btncss list-group-item list-group-item-action" (click)="editUser(user);"
+                                style="text-align: center">Edit</button>
+                            <button class="btncss list-group-item list-group-item-action"
+                                (click)="deleteUser(user.empId)" style="text-align: center">Delete</button>
+                        </ul>
+                    </div>
+                    <hr>
+                </li>
+            </ul>
         </div>
         <div class="col-md-2"></div>
     </div>
