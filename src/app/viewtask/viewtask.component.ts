@@ -15,9 +15,9 @@ export class ViewtaskComponent implements OnInit {
   selectProj: boolean = false;
   viewtasks: any = [];
   viewtask = {};
+  sortSwitch = 0;
 
   listProject: boolean = false;
-  completedTask: boolean = false;
 
   taskData = { taskId: 0, parentId: 0, projId: 0, taskName: '', taskStartDate: '', taskEndDate: '', taskPriority: '0', taskStatus: '' };
   ptaskData = { parentId: 0, taskNameParent: '' };
@@ -47,9 +47,8 @@ export class ViewtaskComponent implements OnInit {
       console.log("TS - getTask : ", tasks);
       for (let task of tasks) {
         this.taskData = task;
-        this.completedTask = false;
         if (task.taskStatus == "Completed") {
-          this.completedTask = true;
+          task["completedTask"] = true;
         }
         task["taskNameParent"] = "None";
         if (this.taskData.parentId != 0) {
@@ -80,4 +79,20 @@ export class ViewtaskComponent implements OnInit {
       console.log("TS - endTask : ", task.taskId);
     })
   }
+
+  sortByKey(array, key) {
+    let type = -1;
+    if (this.sortSwitch % 2 == 0) {
+      console.log("sortSwitch : ", this.sortSwitch);
+      type = type * -1;
+    }
+    this.sortSwitch = this.sortSwitch + 1;
+    console.log("before sort key : ", key);
+    this.viewtasks = array.sort(function (a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? (-1 * type) : (x > y) ? (1 * type) : 0);
+    });
+    console.log("after sort viewtasks : ", this.viewtasks);
+  }
+
 }

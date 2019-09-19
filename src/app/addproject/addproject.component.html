@@ -2,9 +2,9 @@
     <div class="col-md-1"></div>
     <div class="navbar col-md-7">
         <a routerLink="/addproject" class="active">Add Project</a>
-        <a routerLink="/addtask">Add Task</a>
-        <a routerLink="/adduser">Add User</a>
-        <a routerLink="/viewtask">View Task</a>
+        <a style="color: black" routerLink="/addtask">Add Task</a>
+        <a style="color: black" routerLink="/adduser">Add User</a>
+        <a style="color: black" routerLink="/viewtask">View Task</a>
     </div>
     <div class="col-md-2"></div>
 </div>
@@ -52,8 +52,10 @@
             </div>
             <form class="form-inline">
                 <div class="col-sm-8"></div>
-                <button (click)="addProject()" *ngIf="!checkUpd" class="btn btn-primary" style="margin-right: 5px">Add</button>
-                <button (click)="addProject()" *ngIf="checkUpd" class="btn btn-primary" style="margin-right: 5px">Update</button>
+                <button (click)="addProject()" *ngIf="!checkUpd" class="btn btn-primary"
+                    style="margin-right: 5px">Add</button>
+                <button (click)="addProject()" *ngIf="checkUpd" class="btn btn-primary"
+                    style="margin-right: 5px">Update</button>
                 <button (click)="reset()" class="btn btn-primary">Reset</button>
             </form>
             <div class="col-md-2"></div>
@@ -70,21 +72,14 @@
             <div class="form-group">
                 <label class="col-sm-2">Sort By:</label>
 
-                <button style="margin-right: 6%" (click)="sort('projStartDate')">Start Date</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projStartDate'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 6%" (click)="sortByKey(projects,'projStartDate')">Start Date</button>
 
-                <button style="margin-right: 6%" (click)="sort('projEndDate')">End Date</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projEndDate'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 6%" (click)="sortByKey(projects,'projEndDate')">End Date</button>
 
-                <button style="margin-right: 6%" (click)="sort('projPriority')">Priority</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projPriority'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 6%" (click)="sortByKey(projects,'projPriority')">Priority</button>
 
-                <button style="margin-right: 6%" (click)="sort('projPriority')">Completed</button>
-                <span class="glyphicon sort-icon" *ngIf="key == 'projPriority'"
-                    [ngClass]="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
+                <button style="margin-right: 6%" (click)="sortByKey(projects,'projPriority')">Completed</button>
+
             </div>
         </div>
         <div class="col-md-2"></div>
@@ -93,14 +88,14 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-10">
-            <ul class="projects">
+            <ul class="projects" style="list-style-type: none;">
                 <li *ngFor="let project of projects | filter:filter ">
                     <div class="row">
                         <ul class="viewlist list-group col-6" style="list-style-type: none;">
                             <div class="row">
                                 <div class="col-12">
-                                    <li class="viewlist list-group-item list-group-item-action"><span
-                                            style="font-weight: 500">
+                                    <li class="viewlist col-12 list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
                                             Project : </span> {{project.projName}}
                                     </li>
                                     <br>
@@ -108,49 +103,56 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <li class="viewlist list-group-item list-group-item-action"> <span
-                                            style="font-weight: 500">
-                                            No of Tasks : </span>
-                                        {{project.projNoOfTasks}}</li>
+                                    <li class="viewlist list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            No of Tasks : </span> {{project.projNoOfTasks}}
+                                    </li>
                                 </div>
                                 <div class="col-6">
-                                    <li class="viewlist list-group-item list-group-item-action"> <span
-                                            style="font-weight: 500">
-                                            Completed : </span>
-                                        {{project.noOfCompleted}}</li>
+                                    <li class="viewlist list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            Completed : </span> {{project.noOfCompleted}}
+                                    </li>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-6">
-                                    <li class="viewlist list-group-item list-group-item-action"> <span
-                                            style="font-weight: 500">Start Date :</span>
-                                        {{project.projStartDate}}</li>
+                                    <li class="viewlist list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            Start Date : </span> {{project.projStartDate}}
+                                    </li>
                                 </div>
                                 <div class="col-6">
-                                    <li class="viewlist list-group-item list-group-item-action"> <span
-                                            style="font-weight: 500">End Date : </span>
-                                        {{project.projEndDate}}</li>
+                                    <li class="viewlist list-group-item list-group-item-action"
+                                        style="list-style-type: none; padding:5px"><span style="font-weight: 500">
+                                            End Date : </span> {{project.projEndDate}}</li>
                                 </div>
                             </div>
                         </ul>
-                        <ul class="viewlist list-group col-1" style="list-style-type: none;">
+                        <ul class="list-group col-1" style="list-style-type: none; padding: 0px 5px;">
                             <div class="row-2">
-                                <label style="font-weight: 500">Priority</label>
-                                <br>
-                                <!-- <br> -->
+                                <label style="font-weight: 500; padding: 0px 5px;">Priority</label>
                             </div>
-                            <div class="row-2">
-                                <li class="viewlist list-group-item list-group-item-action" style="text-align: center">
-                                    {{project.projPriority}}</li>
+                            <div class="row-3">
+                                <li class="viewlist list-group-item list-group-item-action"
+                                    style="text-align: center; padding: 50% 5%;">
+                                    <p style="text-align: center;">{{project.projPriority}}</p>
+                                </li>
                             </div>
                         </ul>
 
                         <ul class="list-group col-2" style="list-style-type: none;">
-                            <button class="listbtncss list-group-item list-group-item-action"
-                                (click)="updateProj(project);" style="text-align: center">Update</button>
-                            <button class="listbtncss list-group-item list-group-item-action"
-                                (click)="suspendProj(project)" style="text-align: center">Suspend</button>
+                            <div class="row-3">
+                                <button class="listbtncss list-group-item list-group-item-action"
+                                    (click)="updateProj(project);"
+                                    style="text-align: center; padding: 9% 0%;">Update</button>
+                            </div>
+                            <div class="row-3">
+                                <button class="listbtncss list-group-item list-group-item-action"
+                                    (click)="suspendProj(project)"
+                                    style="text-align: center; padding: 9% 0%;">Suspend</button>
+                            </div>
                         </ul>
                     </div>
                     <hr>

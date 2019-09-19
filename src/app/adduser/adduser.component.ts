@@ -11,18 +11,13 @@ export class AdduserComponent implements OnInit {
 
   users: any = [];
   checkUpd: boolean = false;
+  sortSwitch = 0;
 
   @Input() userData = { firstName: '', lastName: '', empId: '', projId: null, taskId: null };
 
   constructor(public rest: RestService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.getUsers();
-  }
-
-  reset() {
-    this.userData = { firstName: '', lastName: '', empId: '', projId: null, taskId: null };
-    this.checkUpd = false;
     this.getUsers();
   }
 
@@ -53,4 +48,26 @@ export class AdduserComponent implements OnInit {
       this.reset();
     })
   }
+
+  sortByKey(array, key) {
+    let type = -1;
+    if (this.sortSwitch % 2 == 0) {
+      console.log("sortSwitch : ", this.sortSwitch);
+      type = type * -1;
+    }
+    this.sortSwitch = this.sortSwitch + 1;
+    console.log("before sort key : ", key);
+    this.users = array.sort(function (a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? (-1 * type) : (x > y) ? (1 * type) : 0);
+    });
+    console.log("after sort users : ", this.users);
+  }
+
+  reset() {
+    this.userData = { firstName: '', lastName: '', empId: '', projId: null, taskId: null };
+    this.checkUpd = false;
+    this.getUsers();
+  }
+
 }

@@ -13,6 +13,7 @@ export class AddprojectComponent implements OnInit {
   display: boolean = false;
   setDate: boolean = false;
   checkUpd: boolean = false;
+  sortSwitch = 0;
 
   public startDate = new Date(new Date());
   public endDate = new Date(new Date().getTime() + 86400000);
@@ -92,8 +93,8 @@ export class AddprojectComponent implements OnInit {
         this.rest.getTaskByProjId(proj.projId, 0).subscribe((tasks) => {
           proj["projNoOfTasks"] = tasks.length;
           let tempCount = 0;
-          for (let task of tasks){
-            if(task.taskStatus == "Completed"){
+          for (let task of tasks) {
+            if (task.taskStatus == "Completed") {
               tempCount = tempCount + 1;
             }
           }
@@ -117,6 +118,21 @@ export class AddprojectComponent implements OnInit {
     this.userData = user;
   }
 
+  sortByKey(array, key) {
+    let type = -1;
+    if (this.sortSwitch % 2 == 0) {
+      console.log("sortSwitch : ", this.sortSwitch);
+      type = type * -1;
+    }
+    this.sortSwitch = this.sortSwitch + 1;
+    console.log("before sort key : ", key);
+    this.projects = array.sort(function (a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? (-1 * type) : (x > y) ? (1 * type) : 0);
+    });
+    console.log("after sort projects : ", this.projects);
+  }
+
   reset() {
     this.projectData = { projName: '', projStartDate: '', projEndDate: '', projPriority: '0' };
     this.userData = { userId: '', firstName: '', lastName: '', empId: '', projId: '', taskId: '' };
@@ -126,5 +142,9 @@ export class AddprojectComponent implements OnInit {
 }
 
 function dateFormatter(date) {
-  return `${date.getFullYear()}-${("0" + date.getMonth()).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
+  let fullYear = date.fullYear();
+  let getMonth = date.getMonth() + 1;
+  let getDate = date.getDate();
+
+  return `${fullYear}-${("0" + getMonth).slice(-2)}-${("0" + getDate).slice(-2)}`;
 }
